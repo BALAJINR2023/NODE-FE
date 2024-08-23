@@ -25,5 +25,28 @@ const teacherSchema = new mongoose.Schema({
 
 // Model creation using schema
 const teacherModel = new mongoose.model("teacher", teacherSchema, "teachers");
+const userSchema = new mongoose.Schema({
+  id: {
+    type: "string",
+    required: true,
+  },
+  name: {
+    type: "string",
+    required: true,
+  },
+  email: {
+    type: "string",
+    required: true,
+  },
+  password: {
+    type: "string",
+    required: true,
+  },
+  role: {
+    type: "string",
+    required: true,
+  },
+});
 
-export {teacherModel};
+const userModel = new mongoose.model("user", userSchema, "users");
+export {teacherModel,userModel};
