@@ -7,7 +7,7 @@ import connectDB from './db.utils/Mongo.js';
 import cors from 'cors';
 import registerRouter from './routes/auth/register.js';
 import loginRouter from './routes/auth/login.js';
-
+// import jwt from "jsonwebtoken";
 server.use(express.json());
 server.use(cors());
 await connectDB();
@@ -26,10 +26,25 @@ const customMiddleware = (req, res, next) => {
   
 server.use(customMiddleware);
 
-
+const authApi = (req, res, next) => {
+    try {
+      const token = req.headers["authorization"];
+      const data = jwt.verify(token, process.env.JWT_SECRET);
+  
+      if (data.role === "Teacher") {
+        next();
+      } else {
+        throw new Error();
+      }
+    } catch (err) {
+      console.log(err.message);
+      // err
+      res.status(403).send({ msg: "Unauthorized" });
+    }
+  };
 //Endpoint Routes
 server.use('/students',studentRouter);
-server.use('/teachers',teachersRouter);
+server.use('/teachers',authApi,teachersRouter);
 server.use('/register',registerRouter);
 server.use('/login',loginRouter);
 

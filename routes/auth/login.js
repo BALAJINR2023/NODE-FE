@@ -26,8 +26,8 @@ const userData=req.body;
                     }
                   );
       
-                  console.log(typeof user);
-      
+                  console.log( user);
+                  
                   var token = jwt.sign(user, process.env.JWT_SECRET, {
                     expiresIn: "1day",
                   });
